@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Slider dengan Auto Slide</title>
+    <style>
+      /* Gaya CSS untuk slider */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f4f4;
+      }
+
+      .slider {
+        position: relative;
+        width: 90%;
+        max-width: 800px;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .slides {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .slide {
+        min-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .slide img {
+        width: 100%;
+        display: block;
+      }
+
+      /* Tombol navigasi */
+      .prev,
+      .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        z-index: 10;
+      }
+
+      .prev {
+        left: 10px;
+      }
+
+      .next {
+        right: 10px;
+      }
+
+      .prev:hover,
+      .next:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Struktur slider -->
+    <div class="slider">
+      <div class="slides">
+        <!-- Slide 1 -->
+        <div class="slide">
+          <img src="img/home-img-1.jpg" alt="Slide 1" />
+        </div>
+        <!-- Slide 2 -->
+        <div class="slide">
+          <img src="img/home-img-2.jpg" alt="Slide 2" />
+        </div>
+        <!-- Slide 3 -->
+        <div class="slide">
+          <img src="img/home-img-3.jpg" alt="Slide 3" />
+        </div>
+      </div>
+      <!-- Navigasi -->
+      <button class="prev" onclick="prevSlide()">&#10094;</button>
+      <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+
+    <!-- JavaScript untuk interaksi slider -->
+    <script>
+      let currentIndex = 0;
+      let autoSlideInterval;
+
+      function showSlide(index) {
+        const slides = document.querySelector(".slides");
+        const totalSlides = document.querySelectorAll(".slide").length;
+
+        if (index >= totalSlides) currentIndex = 0;
+        else if (index < 0) currentIndex = totalSlides - 1;
+        else currentIndex = index;
+
+        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
+
+      function nextSlide() {
+        showSlide(currentIndex + 1);
+        resetAutoSlide();
+      }
+
+      function prevSlide() {
+        showSlide(currentIndex - 1);
+        resetAutoSlide();
+      }
+
+      function startAutoSlide() {
+        autoSlideInterval = setInterval(() => {
+          showSlide(currentIndex + 1);
+        }, 5000); // Pindah slide setiap 5 detik
+      }
+
+      function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+      }
+
+      // Mulai auto-slide saat halaman dimuat
+      window.onload = () => {
+        startAutoSlide();
+      };
+    </script>
+  </body>
+</html>
